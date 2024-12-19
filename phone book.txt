@@ -1,0 +1,130 @@
+# Phonebook class to manage friend names and mobile numbers
+class Phonebook:
+    def __init__(self):
+        self.phonebook = []
+
+    def insert_friend(self, name, mobile_number):
+        # Insert the friend in the phonebook in sorted order by name
+        for i, (n, _) in enumerate(self.phonebook):
+            if n == name:
+                print(f"{name} is already in the phonebook.")
+                return
+            if n > name:
+                self.phonebook.insert(i, (name, mobile_number))
+                print(f"{name} inserted into the phonebook.")
+                return
+        self.phonebook.append((name, mobile_number))
+        print(f"{name} inserted into the phonebook.")
+
+    def print_phonebook(self):
+        print("Phonebook (Sorted by Name):")
+        for name, mobile_number in self.phonebook:
+            print(f"{name}: {mobile_number}")
+
+    # Binary Search (Non-Recursive)
+    def binary_search_non_recursive(self, name):
+        low, high = 0, len(self.phonebook) - 1
+        while low <= high:
+            mid = (low + high) // 2
+            if self.phonebook[mid][0] == name:
+                return mid
+            elif self.phonebook[mid][0] < name:
+                low = mid + 1
+            else:
+                high = mid - 1
+        return -1
+
+    # Binary Search (Recursive)
+    def binary_search_recursive(self, name, low, high):
+        if low > high:
+            return -1
+        mid = (low + high) // 2
+        if self.phonebook[mid][0] == name:
+            return mid
+        elif self.phonebook[mid][0] < name:
+            return self.binary_search_recursive(name, mid + 1, high)
+        else:
+            return self.binary_search_recursive(name, low, mid - 1)
+
+    # Fibonacci Search
+    def fibonacci_search(self, name):
+        n = len(self.phonebook)
+        fib_m_2 = 0
+        fib_m_1 = 1
+        fib = fib_m_1 + fib_m_2
+
+        while fib < n:
+            fib_m_2 = fib_m_1
+            fib_m_1 = fib
+            fib = fib_m_1 + fib_m_2
+
+        low = 0
+        high = n - 1
+
+        while fib > 1:
+            i = min(low + fib_m_2, high)
+
+            if self.phonebook[i][0] < name:
+                fib = fib_m_1
+                fib_m_1 = fib_m_2
+                fib_m_2 = fib - fib_m_1
+                low = i + 1
+            elif self.phonebook[i][0] > name:
+                fib = fib_m_2
+                fib_m_1 = fib_m_1 - fib_m_2
+                fib_m_2 = fib - fib_m_1
+                high = i - 1
+            else:
+                return i
+
+        if fib_m_1 and self.phonebook[low][0] == name:
+            return low
+
+        return -1
+
+
+# Create a Phonebook instance
+phonebook = Phonebook()
+
+# Get user input for friends' names and mobile numbers
+num_friends = int(input("How many friends would you like to add to the phonebook? "))
+
+for _ in range(num_friends):
+    name = input("Enter friend's name: ")
+    mobile_number = input("Enter friend's mobile number: ")
+    phonebook.insert_friend(name, mobile_number)
+
+# Print the phonebook
+phonebook.print_phonebook()
+
+# Get a name to search from the user
+name_to_search = input("Enter the name of the friend to search: ")
+
+# Search for a friend using Binary Search (Non-Recursive)
+index = phonebook.binary_search_non_recursive(name_to_search)
+if index != -1:
+    print(f"{name_to_search} found at index {index} using non-recursive binary search.")
+else:
+    print(f"{name_to_search} not found using non-recursive binary search.")
+
+# Search for a friend using Binary Search (Recursive)
+index = phonebook.binary_search_recursive(name_to_search, 0, len(phonebook.phonebook) - 1)
+if index != -1:
+    print(f"{name_to_search} found at index {index} using recursive binary search.")
+else:
+    print(f"{name_to_search} not found using recursive binary search.")
+
+# Search for a friend using Fibonacci Search
+index = phonebook.fibonacci_search(name_to_search)
+if index != -1:
+    print(f"{name_to_search} found at index {index} using Fibonacci search.")
+else:
+    print(f"{name_to_search} not found using Fibonacci search.")
+
+# Insert a new friend if not present
+name_to_insert = input("Enter a new friend's name to insert if not present: ")
+mobile_number_to_insert = input("Enter the mobile number of the new friend: ")
+phonebook.insert_friend(name_to_insert, mobile_number_to_insert)
+
+# Print the updated phonebook
+phonebook.print_phonebook()

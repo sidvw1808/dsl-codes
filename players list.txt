@@ -1,0 +1,63 @@
+def remove_duplicates(lst):
+    """Remove duplicate entries from a list."""
+    unique_lst = []
+    for item in lst:
+        if item not in unique_lst:
+            unique_lst.append(item)
+    return unique_lst
+
+def common_elements(lst1, lst2):
+    """Return common elements between two lists."""
+    result = []
+    for item in lst1:
+        if item in lst2:
+            result.append(item)
+    return result
+
+def only_in_one_list(lst1, lst2):
+    """Return elements that are in either list but not both."""
+    result = []
+    for item in lst1:
+        if item not in lst2:
+            result.append(item)
+    for item in lst2:
+        if item not in lst1:
+            result.append(item)
+    return result
+
+def main():
+    # Input lists of students in each group from the user
+    group_a = input("Enter names of students who play cricket (comma-separated): ").split(',')
+    group_b = input("Enter names of students who play badminton (comma-separated): ").split(',')
+    group_c = input("Enter names of students who play football (comma-separated): ").split(',')
+
+    # Remove spaces and duplicates
+    group_a = remove_duplicates([name.strip() for name in group_a])
+    group_b = remove_duplicates([name.strip() for name in group_b])
+    group_c = remove_duplicates([name.strip() for name in group_c])
+
+    # a) Students who play both cricket and badminton
+    cricket_and_badminton = common_elements(group_a, group_b)
+
+    # b) Students who play either cricket or badminton but not both
+    cricket_or_badminton_but_not_both = only_in_one_list(group_a, group_b)
+
+    # c) Students who play neither cricket nor badminton
+    all_students = group_a + group_b + group_c
+    all_students = remove_duplicates(all_students)
+    cricket_or_badminton = group_a + group_b
+    cricket_or_badminton = remove_duplicates(cricket_or_badminton)
+    neither_cricket_nor_badminton = [student for student in all_students if student not in cricket_or_badminton]
+
+    # d) Students who play cricket and football but not badminton
+    cricket_and_football = common_elements(group_a, group_c)
+    cricket_football_not_badminton = [student for student in cricket_and_football if student not in group_b]
+
+    # Print results
+    print("a) Students who play both cricket and badminton:", cricket_and_badminton)
+    print("b) Students who play either cricket or badminton but not both:", cricket_or_badminton_but_not_both)
+    print("c) Students who play neither cricket nor badminton:", neither_cricket_nor_badminton)
+    print("d) Students who play cricket and football but not badminton:", cricket_football_not_badminton)
+
+if __name__ == "__main__":
+    main()

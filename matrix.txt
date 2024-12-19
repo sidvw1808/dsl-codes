@@ -1,0 +1,61 @@
+def add_matrices(matrix1, matrix2):
+    result = []
+    for i in range(len(matrix1)):
+        row = [matrix1[i][j] + matrix2[i][j] for j in range(len(matrix1[0]))]
+        result.append(row)
+    return result
+
+def subtract_matrices(matrix1, matrix2):
+    result = []
+    for i in range(len(matrix1)):
+        row = [matrix1[i][j] - matrix2[i][j] for j in range(len(matrix1[0]))]
+        result.append(row)
+    return result
+
+def multiply_matrices(matrix1, matrix2):
+    result = []
+    for i in range(len(matrix1)):
+        row = []
+        for j in range(len(matrix2[0])):
+            value = sum(matrix1[i][k] * matrix2[k][j] for k in range(len(matrix2)))
+            row.append(value)
+        result.append(row)
+    return result
+
+def transpose_matrix(matrix):
+    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+
+def input_matrix(rows, cols, name):
+    print(f"Enter elements of {name} matrix:")
+    return [[int(input(f"Element [{i+1}][{j+1}]: ")) for j in range(cols)] for i in range(rows)]
+
+def print_matrix(matrix, title):
+    print(f"\n{title}:")
+    for row in matrix:
+        print(row)
+
+def main():
+    print("Matrix Computation Program")
+
+    # Input dimensions
+    rows = int(input("Enter the number of rows: "))
+    cols = int(input("Enter the number of columns: "))
+
+    # Input matrices
+    matrix1 = input_matrix(rows, cols, "first")
+    matrix2 = input_matrix(rows, cols, "second")
+
+    # Perform operations
+    addition = add_matrices(matrix1, matrix2)
+    subtraction = subtract_matrices(matrix1, matrix2)
+    multiplication = multiply_matrices(matrix1, matrix2)
+    transpose1 = transpose_matrix(matrix1)
+
+    # Display results
+    print_matrix(addition, "Addition of matrices")
+    print_matrix(subtraction, "Subtraction of matrices")
+    print_matrix(multiplication, "Multiplication of matrices")
+    print_matrix(transpose1, "Transpose of the first matrix")
+
+if __name__ == "__main__":
+    main()

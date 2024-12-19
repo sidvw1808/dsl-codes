@@ -1,0 +1,40 @@
+# Function for quick sort:
+def quickSort(arr):
+    if len(arr) <= 1: # if array is empty array
+        return arr
+
+    pivot = arr[len(arr) // 2] # Set pivot element
+
+    left = [] # Empty list to store left part
+    middle = [] # Empty list to store middle element
+    right = [] # Empty list to store right part
+    for i in arr:
+        if (i < pivot):
+            left.append(i)
+        elif (i == pivot):
+            middle.append(i)
+        else:
+            right.append(i)
+
+    return quickSort(left) + middle + quickSort(right)
+
+# Function for displaying top scores:
+def top5(arr):
+    top_scores = quickSort(arr)
+    return top_scores[-1:-6:-1]
+
+# Defining main function:
+def main():
+    percent = [] # List to store percentages
+    
+    total = int(input("Total number of students are:\t")) # Input for total students
+    for i in range(total):
+        percent_in = float(input(f"Enter percentage for student {i+1}:\t"))
+        percent.append(percent_in)
+    
+    print(f"-----\nPercentages of students are:\t {percent}\n-----")
+    print(f"\n-----\nSorted marks (using quick sort algorithm):\t{quickSort(percent)}\n-----")
+    print(f"\n-----\nTop five scores are:\t{top5(percent)}\n-----")
+
+# Calling main function:
+main()

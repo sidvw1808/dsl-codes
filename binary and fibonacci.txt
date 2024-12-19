@@ -1,0 +1,79 @@
+def attendInput(attendees):
+    """Take input for roll numbers of attendees."""
+    programRoll = []
+    for i in range(attendees):
+        roll = int(input(f"Enter roll number for student {i + 1}:	"))
+        programRoll.append(roll)
+    print(f"Roll numbers of {attendees} students that attended the program are:	 {programRoll}")
+    return programRoll
+
+def binarySearch(arr, target):
+    """Perform binary search."""
+    sorted_arr = sorted(arr)  # Use a sorted copy to preserve original order
+    low, high = 0, len(sorted_arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if sorted_arr[mid] == target:
+            return mid
+        elif sorted_arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+def fibonacciSearch(arr, target):
+    """Perform Fibonacci search."""
+    sorted_arr = sorted(arr)
+    fibMMm2 = 0
+    fibMMm1 = 1
+    fibM = fibMMm2 + fibMMm1
+    n = len(sorted_arr)
+    while fibM < n:
+        fibMMm2, fibMMm1 = fibMMm1, fibM
+        fibM = fibMMm2 + fibMMm1
+    offset = -1
+    while fibM > 1:
+        i = min(offset + fibMMm2, n - 1)
+        if sorted_arr[i] < target:
+            fibM, fibMMm1, fibMMm2 = fibMMm1, fibMMm2, fibM - fibMMm1
+            offset = i
+        elif sorted_arr[i] > target:
+            fibM, fibMMm1, fibMMm2 = fibMMm2, fibMMm1 - fibMMm2, fibM - fibMMm1
+        else:
+            return i
+    if fibMMm1 and offset + 1 < n and sorted_arr[offset + 1] == target:
+        return offset + 1
+    return -1
+
+def main():
+    attendees = int(input("Enter the number of students attending the program:	"))
+    programRoll = attendInput(attendees)
+
+    while True:
+        print("\n----- CHOOSE SEARCH TYPE -----")
+        print("1 -> Binary search")
+        print("2 -> Fibonacci search")
+        print("3 -> Exit")
+        optn = int(input("\nChoose an option (1-3):	"))
+        if optn == 1:
+            searchAttendee = int(input("Enter the roll number you want to search:	"))
+            result = binarySearch(programRoll, searchAttendee)
+            if result == -1:
+                print(f"\nRoll number {searchAttendee} was not found.\n")
+            else:
+                print(f"\nRoll number {searchAttendee} attended the program.\n")
+        elif optn == 2:
+            searchAttendee = int(input("Enter the roll number you want to search:	"))
+            result = fibonacciSearch(programRoll, searchAttendee)
+            if result == -1:
+                print(f"\nRoll number {searchAttendee} was not found.\n")
+            else:
+                print(f"\nRoll number {searchAttendee} attended the program.\n")
+        elif optn == 3:
+            print("\n## END OF CODE\n")
+            break
+        else:
+            print("\nPlease choose a valid option (1-3)\n")
+
+if __name__ == "__main__":
+    main()
